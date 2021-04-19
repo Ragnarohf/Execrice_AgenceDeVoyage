@@ -1,19 +1,5 @@
 <?php
-// if (!empty($_GET['themeSwitch']) || !empty($_SESSION['themeSwitch'])) {
-//     //j'insere dans ma session le theme choisie par mon utilisateur
-//     $_SESSION['themeSwitch'] = $_GET['themeSwitch'];
-//     $themeChecked = $_SESSION['themeSwitch'];
-//     //je determine quel theme bootswatch va etre utiliser 
-//     if ($_GET['themeSwitch']) {
-//         $themeSwitch = "https://bootswatch.com/4/flatly/bootstrap.css";
-//     } else {
-//         $themeSwitch = "https://bootswatch.com/4/journal/bootstrap.min.css";
-//     }
-// }
-// if (!isset($themeSwitch)) { // si aucun theme definie, je choisie une theme par defaut
-//     $themeSwitch = "https://bootswatch.com/4/flatly/bootstrap.css";
-//     $themeChecked = false;
-// }
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -50,52 +36,18 @@
                         <a class="nav-link" href="index.php">home
                         </a>
                     </li>
-                    <?php if (empty($_SESSION['role'])) { ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="registration.php">s'inscrire</a>
-                        </li>
-                    <?php } ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="formulaire.php">Formulaires admin</a>
+                    </li>
 
-                    <?php if (!empty($_SESSION['role']) && $_SESSION['role'] === 'role_admin') { ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="formulaire.php">Formulaires admin</a>
-                        </li>
-                    <?php } ?>
 
-                    <?php if (empty($_SESSION['role'])) { ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.php">Login</a>
-                        </li>
-                    <?php } ?>
-
-                    <?php if (!empty($_SESSION['role'])) { ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="logout.php">logout</a>
-                        </li>
-                    <?php } ?>
-
-                    <div class="custom-control custom-switch text-light d-inline">
-                        <input type="checkbox" class="custom-control-input" id="themeSwitch">
-                        <label class="custom-control-label" for="themeSwitch">Nuit/jour</label>
-
-                </ul>
-                <form class="form-inline my-lg-0 autoComp">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search" id="recherche">
-                    <button class="btn btn-secondary  my-sm-0" type="submit">Search</button>
-                    <div class="divAutoComp"></div>
-                </form>
             </div>
         </nav>
 
 
         </div>
-        <?php if (!empty($_SESSION['prenom'])) { ?>
-            <div>Bonjour <?= $_SESSION['prenom'] . " " . $_SESSION['nom'] ?></div>
-        <?php } else { ?>
-            <div>Vous n'êtes pas enregistrés.</div>
-        <?php } ?>
 
-        <script src='./assets/js/themeSwitch.js'></script>
-        <script src='./assets/js/autocomplete.js'></script>
+
+
     </header>
     <main>

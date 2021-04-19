@@ -1,11 +1,10 @@
 <?php
-session_start();
+
 
 
 // pour executer des requetes mysql j'ai besoin dans ce fichier d'appeler ma conexion a la bdd
 
 require_once('./inc/functions.php');
-protectUrl('role_admin');
 // phpinfo();permet de connaitre les spec dus erveur ex:taille maximal des fichiers uploadés
 //$_FILES permet de stocker les fichiers uploadés (input type="files)
 require_once("./vendor/autoload.php");
@@ -17,54 +16,15 @@ $erreur = [];
 
 if (!empty($_POST)) {
 
-    // var_dump($_FILES);
-    // $_POST permet de stocker toutes les autres fpormes de données envoyées par un formulaire (method="post")
-    //var_dump($_POST); //supergblobales
-    //echo $_POST["title"];
+    $titre = verifInput("titre", true);
+    $description = verifInput("description", "le champ description est vide");
 
-    //Gestion donnée du POST
-
-    // la function verifInput va etre partagées entre plusieurs formulaires : DRY
-    // je la partage sur function.php
-    // function verifInput($input, $txtErreur)
-    // {   // pour poiuvoir utiliser mon tableau d'erreur a l'interieur de ma fonction
-    //     // je le déclare en global 
-    //     global $erreur;
-    //     // strlen me permet de verifier que ma chaine $input (string)
-    //     //contient bien au moins 1 caractere
-    //     if (strlen($_POST[$input]) > 0) {
-    //         //trim() supprime tous les caracteres invisible 
-    //         return  trim(strip_tags($_POST[$input]));
-    //     } else {
-    //         //j'ajoute une nouvelle erreur a mon tableau en cas de champs vide 
-    //         $erreur[$input] = $txtErreur;
-    //         //array_push($erreur,$input $txtErreur);
-    //     }
-    // }
-    $title = verifInput("title", "le champ titre est vide");
-    $artiste = verifInput("artiste", "le champ artiste est vide");
     $genre = verifInput("genre",  "le champ genre est vide");
     // is_int() me permet de determiner si ma var est bien de type int
-    if (!empty($_POST["annee"])) {
-        $annee = trim(strip_tags($_POST["annee"]));
-        $annee = intval($annee);
-        //var_dump($annee);
-    }
-    if (!empty($_POST["description"])) {
-        $description = trim(strip_tags($_POST["description"]));
-    }
+
 
     // Gestion des données FILES
-    // audio
-    if ($_FILES['mp3']["size"] > 0 && $_FILES['mp3']["error"] === 0) {
-        if ($_FILES["mp3"]['type'] === "audio/mpeg") {
-            $mp3 = $_FILES["mp3"]['tmp_name'];
-        } else {
-            $erreur['mp3'] = "le fichier mp3 n'est pas au bon format";
-        }
-    } else {
-        $erreur['mp3'] = "le champ mp3 est vide";
-    }
+
 
     //image
     if ($_FILES['coverImg']["size"] > 0 && $_FILES['coverImg']["error"] === 0) {

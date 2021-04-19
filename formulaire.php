@@ -1,10 +1,6 @@
 <?php
-session_start();
+
 require_once("./inc/functions.php");
-//protection contre un acces direct via l'url 
-protectUrl('role_admin');
-
-
 include('./inc/header.php');
 ?>
 <!DOCTYPE html>
@@ -14,43 +10,37 @@ include('./inc/header.php');
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>formulaire</title>
+    <title>Poke tour </title>
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body>
-    <!-- form>(input*5+select>(option)) -->
+
     <div id="formmp3">
-        <h1>Uploadez vos mp3</h1>
+        <h1>Enregistrez vos voyages</h1>
         <div id="success"></div>
         <form class="formulaire" action="./validator.php" method="POST" enctype="multipart/form-data" name="uploadMP3">
-            <label for="mp3">MP3</label>
-            <input type="file" name="mp3" id="mp3">
-
-            <label for="coverImg">Cover</label>
-            <input type="file" name="coverImg" id="coverImg">
-
-            <input type="text" name="title" placeholder="Titre" id="title">
-            <input type="text" name="artiste" placeholder="Artiste" id="artiste">
-            <input type="text" name="genre" placeholder="Genre" id="genre">
-
-            <select name="annee" id="annee">
-                <option value="" disabled selected>Choisissez l'année</option>
-                <?php
-                $i = 1930;
-                while ($i >= 1930 && $i <= 2021) {
-                    echo "<option value='$i'>$i</option>";
-                    $i++;
-                }
-                ?>
-            </select>
+            <input type="text" name="titre" placeholder="Titre" id="titre">
             <textarea name="description" placeholder="Description" id="description"></textarea>
-            <input type="submit" value="Envoyer" name="submit">
+            <input type="text" name="ville" placeholder="Ville" id="ville">
+            <input type="text" name="pays" placeholder="Pays" id="pays">
+            <input type="text" name="prix_par_personne" placeholder="Prix/Personne" id="prix_par_personne">
+            <input type="text" name="distance_depuis_paris" placeholder="Distance depuis paris" id="distance_depuis_paris"><select name="pets" id="pet-select">
+                <option value="" disabled selected> Pension </option>
+                <option value="complete">Complete</option>
+                <option value="demi_pension">Demi pension</option>
+                <label for="start">Date de depart</label>
+                <input type="date" id="date_de_depart" name="date_de_depart" value="2021-04-19" min="2021-04-19" max="2025-12-31">
+                <label for="start">Date de retour</label>
+                <input type="date" id="date_de_retour" name="date_de_retour" value="2021-04-19" min="2021-04-19" max="2025-12-31">
+                <label for="photo">Photo</label>
+                <input type="file" name="photo" id="photo">
+                <input type="submit" value="Envoyer" name="submit">
         </form>
     </div>
 
 </body>
-<script src="./assets/js/formulaireSend.js"></script>
+
 <?php
 include('./inc/footer.php');
 ?>

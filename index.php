@@ -1,27 +1,27 @@
 <?php
-session_start();
+
 
 
 require_once("./inc/functions.php");
 include("./inc/header.php");
-$order = "title";
-if (!empty($_GET['order'])) {
-    $order = $_GET['order'];
-}
-$limite = 4;
-$index = 0;
-if (!empty($_GET['page'])) {
-    $index = $_GET['page'] * 4;
-}
-$tbVinyle = selectVinylesForPaginator($order, $index, $limite);
-$vinyles = $tbVinyle[0];
-$nbPage = $tbVinyle[1];
-//$vinyles = selectAllVinyles($order);
+// $order = "title";
+// if (!empty($_GET['order'])) {
+//     $order = $_GET['order'];
+// }
+// $limite = 4;
+// $index = 0;
+// if (!empty($_GET['page'])) {
+//     $index = $_GET['page'] * 4;
+// }
+// $tbVinyle = selectVinylesForPaginator($order, $index, $limite);
+// $vinyles = $tbVinyle[0];
+// $nbPage = $tbVinyle[1];
+
 ?>
 
 <div id="slider"></div>
 <div id="submenu">
-    <label for="order">Trier les vinyles</label>
+    <label for="order">Trier les voyages</label>
     <select name="order" id="order">
         <option value="title" <?php if ($order === "title") {
                                     echo "selected";

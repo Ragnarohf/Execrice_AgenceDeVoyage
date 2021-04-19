@@ -35,7 +35,7 @@
 
     *Toutes les données doivent êtres sécurisées avant insertion dans la table.
 
-    ## une page qui permettra d'afficher les voyages saisis dans la bdd
+# une page qui permettra d'afficher les voyages saisis dans la bdd
 
     *La partie description ne devra pas exceder 30 caractères et devra sinon être tronquée.
 
