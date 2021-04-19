@@ -7,7 +7,7 @@ include("./inc/header.php");
 $order = "title";
 if (!empty($_GET)) {
 }
-$tbVinyle = selectAllVoyages($id);
+$tbVoyages[] = selectAllVoyages();
 $voyages = $tbVoyages[0];
 
 ?>
@@ -46,5 +46,3 @@ $voyages = $tbVoyages[0];
 <?php
 include('./inc/footer.php');
 ?>
-<script src="./assets/js/carouselMultiEffets.js"></script>
-<script src="./assets/js/order.js"></script>

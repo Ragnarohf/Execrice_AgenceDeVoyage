@@ -14,6 +14,16 @@ $erreur = [];
 if (!empty($_POST)) {
     // attendre la foncction de julien
     //VERIF LES DONNES
+    $titre = verifInput('titre', true);
+    $description = verifInput('description', true);
+    $ville = verifInput('ville', true);
+    $pays = verifInput('pays', true);
+    $prix_personne = verifInput('prix_personne', true, 'integer');
+    $distance_depuis_paris = verifInput('distance_depuis_paris', true, 'integer');
+    $type_pension = verifInput('type_pension');
+    $date_de_depart = verifInput('date_de_depart');
+    $date_de_retour = verifInput('date_de_retour');
+
 
     // Gestion des données FILES
     //image
@@ -66,13 +76,14 @@ if (!empty($_POST)) {
             $newImg->save("./assets/img_voyage/" . $_FILES["photo"]["name"]);
 
             $erreur['success'] = "votre voyage a bien été enregistré";
+            header("Location:./formulaire.php?er=$erreur");
         } else {
             $erreur['titre'] = "Ce voyage exite deja";
 
-            //erreur utilisateur
 
-            //$erreur = serialize($erreur);
-            //header("Location:./formulaire.php?er=$erreur");
+            header("Location:./formulaire.php?er=$erreur");
         };
+    } else {
+        header("Location:./formulaire.php?er=$erreur");
     }
 }

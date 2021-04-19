@@ -1,13 +1,12 @@
 <?php
 require_once("./inc/pdo.php");
 // function requetes MySQl
-function selectAllVoyages($id)
+function selectAllVoyages()
 {
     global $pdo;
-    //$order servira a laisser le choix du classement pour mes users
-    $rq = " SELECT * from voyages order by $id";
+
+    $rq = " SELECT * from voyages order by id";
     $query = $pdo->prepare($rq);
-    // $query->bindValue(':order', $order, PDO::PARAM_STR);
     $query->execute();
     $result = $query->fetchAll();
     return $result;
@@ -24,6 +23,8 @@ function verifInput($input, $obligatoire = false, $type = false)
         if ($obligatoire) {
             $retour = "";
             $erreur[$input] = "Le champ $input n'est pas rempli.";
+        } else {
+            $retour = "";
         }
     }
     // je gère ici le type de ma variable à envoyer dans la base
@@ -44,6 +45,7 @@ function verifInput($input, $obligatoire = false, $type = false)
                 // autres case possibles : array,object,boolean,NULL,...
             default:
                 # code...
+                $retour = "";
                 break;
         }
     }
