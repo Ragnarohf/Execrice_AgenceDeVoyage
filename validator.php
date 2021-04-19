@@ -1,7 +1,4 @@
 <?php
-
-
-
 // pour executer des requetes mysql j'ai besoin dans ce fichier d'appeler ma conexion a la bdd
 
 require_once('./inc/functions.php');
@@ -15,78 +12,67 @@ $erreur = [];
 
 
 if (!empty($_POST)) {
-
-    $titre = verifInput("titre", true);
-    $description = verifInput("description", "le champ description est vide");
-
-    $genre = verifInput("genre",  "le champ genre est vide");
-    // is_int() me permet de determiner si ma var est bien de type int
-
+    // attendre la foncction de julien
+    //VERIF LES DONNES
 
     // Gestion des données FILES
-
-
     //image
-    if ($_FILES['coverImg']["size"] > 0 && $_FILES['coverImg']["error"] === 0) {
-        if ($_FILES["coverImg"]['type'] === "image/jpeg" || $_FILES["coverImg"]['type'] === "image/jpg" || $_FILES["coverImg"]['type'] === "image/gif" || $_FILES["coverImg"]['type'] === "image/png" || $_FILES["coverImg"]['type'] === "image/webp") {
-            $coverImg = $_FILES["coverImg"]['tmp_name'];
+    if ($_FILES['photo']["size"] > 0 && $_FILES['photo']["error"] === 0) {
+        if ($_FILES["photo"]['type'] === "image/jpeg" || $_FILES["photo"]['type'] === "image/jpg" || $_FILES["photo"]['type'] === "image/gif" || $_FILES["photo"]['type'] === "image/png" || $_FILES["photo"]['type'] === "image/webp") {
+            $photo = $_FILES["photo"]['tmp_name'];
         } else {
-            $erreur['coverImg'] = "le fichier coverImg n'est pas au bon format";
+            $erreur['photo'] = "le fichier photo n'est pas au bon format";
         }
-    } else {
-        $erreur['coverImg'] = "le champ cover est vide";
     }
     // var_dump($erreur);
 
     //je vérifie que mon tableau d'erreur soit vide 
     if (count($erreur) === 0) {
-        $mp3Name = $_FILES['mp3']['name'];
-        $coverImgName = $_FILES['coverImg']['name'];
+        if (!empty($_FILES['photo'])) {
+            $photoName = $_FILES['photo']['name'];
+        } else {
+            $photoname = Null;
+        }
+
         //var_dump("mp3:", $mp3Name);
         //insertion en base
-        $rq = "SELECT id FROM vinyles WHERE mp3 = :mp3Name";
+        $rq = "SELECT id FROM voyages WHERE titre = :titre";
         $query = $pdo->prepare($rq);
-        $query->bindValue(':mp3Name', $mp3Name, PDO::PARAM_STR);
+        $query->bindValue(':titre', $titre, PDO::PARAM_STR);
         $query->execute();
         $result = $query->fetch();
         if (!$result) {
-            $rq = "INSERT INTO vinyles(mp3,cover_img,title, artiste,genre, annee,description )
-            VALUES (:mp3Name, :coverImg,:title, :artiste, :genre,:annee,:description)";
+            $rq = "INSERT INTO voyages(titre,description,ville, pays,prix_par_personne, distance_depuis_paris,pension,date_de_depart,date_de_retour,photo )
+            VALUES (:titre,:description,:ville, :pays,:prix_par_personne, :distance_depuis_paris,:pension,:date_de_depart,:date_de_retour,:photo)";
             $query = $pdo->prepare($rq);
-            $query->bindValue(':mp3Name', $mp3Name, PDO::PARAM_STR);
-            $query->bindValue(':coverImg', $coverImgName, PDO::PARAM_STR);
-            $query->bindValue(':title', $title, PDO::PARAM_STR);
-            $query->bindValue(':artiste', $artiste, PDO::PARAM_STR);
-            $query->bindValue(':genre', $genre, PDO::PARAM_STR);
-            $query->bindValue(':annee', $annee, PDO::PARAM_INT);
+            $query->bindValue(':titre', $titre, PDO::PARAM_STR);
             $query->bindValue(':description', $description, PDO::PARAM_STR);
+            $query->bindValue(':ville', $ville, PDO::PARAM_STR);
+            $query->bindValue(':pays', $pays, PDO::PARAM_STR);
+            $query->bindValue(':prix_par_personne', $prix_par_personne, PDO::PARAM_INT);
+            $query->bindValue(':distance_depuis_paris', $distance_depuis_paris, PDO::PARAM_INT);
+            $query->bindValue(':pension', $pension, PDO::PARAM_STR);
+            $query->bindValue(':date_de_depart', $date_de_depart, PDO::PARAM_STR);
+            $query->bindValue(':date_de_retour', $date_de_retour, PDO::PARAM_STR);
+            $query->bindValue(':photo', $photoName, PDO::PARAM_STR);
             $query->execute();
             //j'upload mes fichiers
-            //var_dump($mp3);
-            move_uploaded_file($mp3, "./assets/audio/" . $_FILES["mp3"]["name"]);
-            move_uploaded_file($coverImg, "./assets/cover/" . $_FILES["coverImg"]["name"]);
-            //var_dump("///////////////////////////", $_FILES["coverImg"]["name"], "///////////////////////////");
-            $newImg = new ImageResize("./assets/cover/" . $_FILES["coverImg"]["name"]);
-            $newImg->resizeToWidth(400);
-            $newImg->save("./assets/cover/" . $_FILES["coverImg"]["name"]);
-            // message sympathique;
-            $erreur['success'] = "votre titre a bien été enregistré";
-            $erreur = json_encode($erreur);
-            echo $erreur;
+
+
+            move_uploaded_file($photo, "./assets/img_voyage/" . $_FILES["photo"]["name"]);
+
+            $newImg = new ImageResize("./assets/img_voyage/" . $_FILES["photo"]["name"]);
+            $newImg->resizeToWidth(200);
+            $newImg->save("./assets/img_voyage/" . $_FILES["photo"]["name"]);
+
+            $erreur['success'] = "votre voyage a bien été enregistré";
         } else {
-            $erreur['mp3'] = "Ce morceau exite deja";
+            $erreur['titre'] = "Ce voyage exite deja";
 
             //erreur utilisateur
-            $erreur = json_encode($erreur);
-            echo $erreur;
+
             //$erreur = serialize($erreur);
             //header("Location:./formulaire.php?er=$erreur");
         };
-    } else {
-        //erreur utilisateur
-        $erreur = json_encode($erreur);
-        echo $erreur;
-        // $erreur = serialize($erreur);
-        //header("Location:./formulaire.php?er=$erreur");
     }
 }
